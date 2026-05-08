@@ -137,7 +137,6 @@ export class Renderer{
                         avgVertLocation.divide(face.vertIndexes.length)
                         avgWVertLocation.divide(face.vertIndexes.length)
 
-
                         let normalVert: Vector3 = face.normal
                         let normalWVert = obj.getWVert(normalVert)
                         normalVert = this.worldVertToCamera(normalWVert)
@@ -147,7 +146,7 @@ export class Renderer{
                         let facingCamDot = avgWVertLocation.subtract(this.camera.getWPosition()).normalize().dotWith(normalMultiplied)
                         
                         if(facingCamDot < 0){
-                            this.fi.screenSpaceFaces.push(new FaceDepthStart(face, this.fi.worldScreenSpaceVerts.length, averageDepth, facingCamDot, General.truncate(facingCamDot, 2).toString()))
+                            this.fi.screenSpaceFaces.push(new FaceDepthStart(face, this.fi.screenSpaceFaces.length, this.fi.worldScreenSpaceVerts.length, averageDepth, facingCamDot, General.truncate(facingCamDot, 2).toString()))
                         }
                     }
                 }
@@ -164,7 +163,7 @@ export class Renderer{
         let imgdata: ImageData = ctx.getImageData(0,0,ctx.canvas.width, ctx.canvas.height)
         for(let i=0;i<this.fi.screenSpaceFaces.length;i++){
             // this.drawPolygonPen(ctx, this.fi.worldScreenSpaceVerts, this.fi.screenSpaceFaces[i], true)
-            this.drawTri(ctx, imgdata, this.fi.worldScreenSpaceVerts, this.fi.screenSpaceFaces[i], true)
+            this.drawTri(ctx, imgdata, this.fi.worldScreenSpaceVerts, this.fi.screenSpaceFaces[i], true, true)
             facesDrawn++
         }
         
@@ -260,16 +259,16 @@ export class Renderer{
                     let newColor: ColorRGBA = new ColorRGBA(fdc.face.color.r, fdc.face.color.g, fdc.face.color.b, fdc.face.color.a)
                     if(isShaded){
                         let change = 0
-                        // change = -((fdc.dot) * 50)
-                        change = 
+                        change = -((fdc.dot) * 50)
+                        // change = 
                         
                         newColor.r = fdc.face.color.r + change
                         newColor.g = fdc.face.color.g + change
                         newColor.b = fdc.face.color.b + change
 
-                        // newColor.r = (1-newZ) * newColor.r + newZ * Color.background.r
-                        // newColor.g = (1-newZ) * newColor.g + newZ * Color.background.g
-                        // newColor.b = (1-newZ) * newColor.b + newZ * Color.background.b
+                        newColor.r = (1-newZ) * newColor.r + newZ * ColorRGBA.background.r
+                        newColor.g = (1-newZ) * newColor.g + newZ * ColorRGBA.background.g
+                        newColor.b = (1-newZ) * newColor.b + newZ * ColorRGBA.background.b
                     }
 
                     this.setImgDataXYtoRGBA(imgdata, P.x, P.y, newColor)
@@ -277,11 +276,17 @@ export class Renderer{
 			}
 		}
 
-        if(this.fi.screenSpaceFaces[i].face.vertIndexes.length == 3){
-            if(Vector2.pointInTriangle(this.fi.worldScreenSpaceVerts[this.fi.screenSpaceFaces[i].face.vertIndexes[0] + this.fi.screenSpaceFaces[i].vertStartIndex].toVector2xy(), this.fi.worldScreenSpaceVerts[this.fi.screenSpaceFaces[i].face.vertIndexes[1] + this.fi.screenSpaceFaces[i].vertStartIndex].toVector2xy(), this.fi.worldScreenSpaceVerts[this.fi.screenSpaceFaces[i].face.vertIndexes[2] + this.fi.screenSpaceFaces[i].vertStartIndex].toVector2xy(), this.screenSpaceMousePosition())){
-                if(this.fi.mouseHoverPosTriDepth > this.fi.screenSpaceFaces[i].depth){
-                    this.fi.mouseHoverPosTriIndex = i
-                    this.fi.mouseHoverPosTriDepth = this.fi.screenSpaceFaces[i].depth
+        if(fdc.face.vertIndexes.length == 3){
+            console.log("mouseTriIndex: " + fdc.faceIndex)
+            if(Vector2.pointInTriangle(
+                this.fi.worldScreenSpaceVerts[this.fi.screenSpaceFaces[fdc.faceIndex].face.vertIndexes[0] + this.fi.screenSpaceFaces[fdc.faceIndex].vertStartIndex].toVector2xy(), 
+                this.fi.worldScreenSpaceVerts[this.fi.screenSpaceFaces[fdc.faceIndex].face.vertIndexes[1] + this.fi.screenSpaceFaces[fdc.faceIndex].vertStartIndex].toVector2xy(), 
+                this.fi.worldScreenSpaceVerts[this.fi.screenSpaceFaces[fdc.faceIndex].face.vertIndexes[2] + this.fi.screenSpaceFaces[fdc.faceIndex].vertStartIndex].toVector2xy(), 
+                this.screenSpaceMousePosition()
+            )){
+                if(this.fi.mouseHoverPosTriDepth > this.fi.screenSpaceFaces[fdc.faceIndex].depth){
+                    this.fi.mouseHoverPosTriIndex = fdc.faceIndex
+                    this.fi.mouseHoverPosTriDepth = this.fi.screenSpaceFaces[fdc.faceIndex].depth
                 }
             }
         }
@@ -351,6 +356,8 @@ export class Renderer{
                 newColor.r = face.color.r - ((fdc.dot/6) * 500)
                 newColor.g = face.color.g - ((fdc.dot/6) * 500)
                 newColor.b = face.color.b - ((fdc.dot/6) * 500)
+
+                
                 // newColor.r = (1-newZ) * newColor.r + newZ * Color.background.r
                 // newColor.g = (1-newZ) * newColor.g + newZ * Color.background.g
                 // newColor.b = (1-newZ) * newColor.b + newZ * Color.background.b
@@ -372,7 +379,6 @@ export class Renderer{
                 avgV3 = avgV3.add(screenSpaceVerts[curInd])
             }
             avgV3 = avgV3.divide(face.vertIndexes.length)
-            // ctx.fillText(fdc.debugText, avgV3.x, avgV3.y)
         }
     }
 
@@ -395,7 +401,7 @@ export class FrameInfo{
     worldScreenSpaceVerts: Vector3[] = [] 
     screenSpaceFaces: FaceDepthStart[] = []
     
-    mouseHoverPosTriDepth: number = 20
+    mouseHoverPosTriDepth: number = 30
     mouseHoverPosTriIndex: number = -1
 
     frameCount: number = 0
@@ -408,14 +414,16 @@ export class FrameInfo{
 
 export class FaceDepthStart {
     face: Face
+    faceIndex: number = -1
     depth: number = -1
     dot: number = -1
     vertStartIndex: number = 0
     isDebug: boolean
     debugText: string = ""
 
-    constructor(face: Face, vertStartIndex: number, depth: number, dot:number, debugText: string = ""){
+    constructor(face: Face, faceIndex:number, vertStartIndex: number, depth: number, dot:number, debugText: string = ""){
         this.face = face
+        this.faceIndex = faceIndex
         this.vertStartIndex = vertStartIndex
         this.depth = depth
         this.dot = dot
