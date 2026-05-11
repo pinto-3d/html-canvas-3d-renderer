@@ -13,7 +13,8 @@ export type RendererProps = {
 export class Renderer{
     
     camera: Camera = new CameraController()
-    FOV: number = 360*2;
+    FOV: number = 90;
+    focalLength: number = 1/ Math.tan(this.FOV/2);
     scaleMultiplier: number = 1
     renderDimensions: Vector2 = Vector2.zero()
     screenDimensions: Vector2 = Vector2.zero()
@@ -30,6 +31,8 @@ export class Renderer{
     colors: ColorRGBA[] = []
 
     mousePosition: Vector2 = Vector2.zero()
+
+    debugVariables: any[] = []
 
     constructor(){
         this.camera.resetRotation()
@@ -49,13 +52,18 @@ export class Renderer{
         this.fi = new FrameInfo(this.FAR_PLANE, props.frameCount)
         this.drawMeshes(props.ctx, objects)
 
-        // this.displayMatrix(props.ctx, this.camera.localMatrix, new Vector2(40, 20))
-        // this.displayMatrix(props.ctx, this.camera.worldMatrix, new Vector2(200, 20))
-        // this.displayMatrix(props.ctx, this.camera.combinedMatrix, new Vector2(360, 20))
-        // this.displayMatrix(props.ctx, this.camera.getFwdVector().toMatrix3(), new Vector2(580, 20))
-        // if(objects.length > 0){
-        //     this.displayMatrix(props.ctx, objects[0].localMatrix, new Vector2(200, 100))
-        // }
+        props.ctx.fillStyle = "white"
+        this.displayMatrix(props.ctx, this.camera.localMatrix, new Vector2(40, 20))
+        this.displayMatrix(props.ctx, this.camera.worldMatrix, new Vector2(200, 20))
+        this.displayMatrix(props.ctx, this.camera.combinedMatrix, new Vector2(360, 20))
+        this.displayMatrix(props.ctx, this.camera.getFwdVector().toMatrix3(), new Vector2(580, 20))
+        if(objects.length > 0){
+            this.displayMatrix(props.ctx, objects[0].localMatrix, new Vector2(200, 100))
+        }
+        for(let i=0;i<this.debugVariables.length;i++){
+            props.ctx.fillStyle = "black"
+            props.ctx.fillText(this.debugVariables[i], 10, (i+1)*35)
+        }
     }
 
     setObjs(objs: Object3D[]){
@@ -259,16 +267,16 @@ export class Renderer{
                     let newColor: ColorRGBA = new ColorRGBA(fdc.face.color.r, fdc.face.color.g, fdc.face.color.b, fdc.face.color.a)
                     if(isShaded){
                         let change = 0
-                        change = -((fdc.dot) * 50)
+                        // change = -((fdc.dot) * 50)
                         // change = 
                         
                         newColor.r = fdc.face.color.r + change
                         newColor.g = fdc.face.color.g + change
                         newColor.b = fdc.face.color.b + change
 
-                        newColor.r = (1-newZ) * newColor.r + newZ * ColorRGBA.background.r
-                        newColor.g = (1-newZ) * newColor.g + newZ * ColorRGBA.background.g
-                        newColor.b = (1-newZ) * newColor.b + newZ * ColorRGBA.background.b
+                        // newColor.r = (1-newZ) * newColor.r + newZ * ColorRGBA.background.r
+                        // newColor.g = (1-newZ) * newColor.g + newZ * ColorRGBA.background.g
+                        // newColor.b = (1-newZ) * newColor.b + newZ * ColorRGBA.background.b
                     }
 
                     this.setImgDataXYtoRGBA(imgdata, P.x, P.y, newColor)
@@ -277,7 +285,6 @@ export class Renderer{
 		}
 
         if(fdc.face.vertIndexes.length == 3){
-            console.log("mouseTriIndex: " + fdc.faceIndex)
             if(Vector2.pointInTriangle(
                 this.fi.worldScreenSpaceVerts[this.fi.screenSpaceFaces[fdc.faceIndex].face.vertIndexes[0] + this.fi.screenSpaceFaces[fdc.faceIndex].vertStartIndex].toVector2xy(), 
                 this.fi.worldScreenSpaceVerts[this.fi.screenSpaceFaces[fdc.faceIndex].face.vertIndexes[1] + this.fi.screenSpaceFaces[fdc.faceIndex].vertStartIndex].toVector2xy(), 

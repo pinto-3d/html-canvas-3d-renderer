@@ -42,12 +42,17 @@ export class Game{
         const bmpCloud: ImageBitmap = await FileImport3D.ImportImage('/cloud.png')
         if(this.objects.length == 0){
             for(let i=0;i<islandObjs.length;i++){
-                this.addObject(new HoveringObject(islandObjs[i].mesh, islandObjs[i].name))
+                if(islandObjs[i].name != "Island"){
+                    this.addObject(new HoveringObject(islandObjs[i].mesh, islandObjs[i].name))
+                }
+                else{
+                    this.addObject(new MouseInteractableObject(islandObjs[i].mesh, islandObjs[i].name))
+                }
             }
             let cloud = new CloudBillboard(bmpCloud, 1, "cloud")
             cloud.moveWPosition(new Vector3(0, 0, 10))
             this.addObject(cloud)
-            this.addObject(new RotatingCube(ColorRGBA.darkBlue))
+            // this.addObject(new RotatingCube(ColorRGBA.darkBlue))
         }
 
         let color:ColorRGBA = new ColorRGBA(45, 215, 0)
@@ -79,6 +84,7 @@ export class Game{
 
         this.renderer.clear(ctx)
         this.renderer.draw({ctx:ctx, deltaTime: 0, frameCount: this.frameCount}, this.objects)
+        this.renderer.debugVariables[0] = this.input.moveVector
         this.frameCount += 1;
         if(this.prevFrameInfo().mouseHoverPosTriIndex != -1){
             this.renderer.drawPolygonPen(ctx, this.prevFrameInfo().worldScreenSpaceVerts, this.prevFrameInfo().screenSpaceFaces[this.prevFrameInfo().mouseHoverPosTriIndex], false, false, false, ColorRGBA.white)

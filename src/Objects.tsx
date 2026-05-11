@@ -1,7 +1,7 @@
 import { ColorRGBA, Vector2 } from "./2D"
 import { Billboard, Camera, Object3D, Vector3 } from "./3D"
 import { Game } from "./Game"
-import type { EventMouseMove } from "./InputManager"
+import type { EventKeyMove, EventMouseMove } from "./InputManager"
 import { Cube } from "./Primitives"
 
 export class MouseInteractableObject extends Object3D{
@@ -69,27 +69,44 @@ export class CloudBillboard extends Billboard {
 export class CameraController extends Camera {
 
     CAM_ROTATION_SPEED: Vector2 = new Vector2(0.1, 0.1) 
+    moveVector: Vector3 = Vector3.zero()
 
     constructor(){
         super()
-        if(Game.instance){
-            document.addEventListener('inputMouseMove', (e) => {
-                const event: CustomEvent<EventMouseMove> = e as CustomEvent<EventMouseMove>
-                this.mouseMoved(event.detail.position, event.detail.delta)
-            })
+        document.addEventListener('inputMouseMove', (e) => {
+            const event: CustomEvent<EventMouseMove> = e as CustomEvent<EventMouseMove>
+            this.mouseMoved(event.detail.position, event.detail.delta)
+        })
+
+        document.addEventListener(`inputKeyMove`, (e) => {
+            const event: CustomEvent<EventKeyMove> = e as CustomEvent<EventKeyMove>
+            this.keyMoved(event.detail.vector)
+        })
+    }
+
+    oldMoveVector: Vector3 = new Vector3()
+    tick(delta:number) {
+        this.moveWPosition(Vector3.fromV3(this.moveVector).multiply(delta * 10))
+        // console.log(delta,"\t\t", this.moveVector.toString())
+        // console.log(this.oldMoveVector.toString(),"\t\t\t",this.moveVector.toString())
+        if(this.moveVector.isEqual(Vector3.zero()) && !this.oldMoveVector.isEqual(Vector3.zero())){
         }
+        this.oldMoveVector = Vector3.fromV3(this.moveVector)
     }
 
     resetRotation() {
         super.resetRotation()
-        this.moveWPosition(new Vector3(0, 2.45*1.6*2, 4.1*1.6*2))
+        this.moveWPosition(new Vector3(0, 2.45, 4.1))
         // this.moveWPosition(new Vector3(0, 0, 10))
         this.camRotate(new Vector2(-Math.PI, 0.5))
     }
 
     mouseMoved(position: Vector2, delta: Vector2){
-        this.resetRotation()
-        this.camRotate(new Vector2((position.x/window.innerWidth-0.5)*this.CAM_ROTATION_SPEED.x, (position.y/window.innerHeight-0.5)*this.CAM_ROTATION_SPEED.y))
+        // this.resetRotation()
+        // this.camRotate(new Vector2((position.x/window.innerWidth-0.5)*this.CAM_ROTATION_SPEED.x, (position.y/window.innerHeight-0.5)*this.CAM_ROTATION_SPEED.y))
+    }
+    keyMoved(vector: Vector3){
+        this.moveVector = Vector3.fromV3(vector)
     }
 }
 

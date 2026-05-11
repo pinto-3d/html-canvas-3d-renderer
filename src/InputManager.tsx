@@ -5,6 +5,10 @@ export interface EventMouseMove{
     position: Vector2;
     delta: Vector2;
 }
+export interface EventKeyMove{
+    vector: Vector3;
+}
+
 export class InputManager {
     keys: Set<string> = new Set()
     key2eventMap: Map<string, string> = new Map<string, string>()
@@ -45,11 +49,12 @@ export class InputManager {
     
     // Define the type for the mouse move event detail
     eventMouseMove: CustomEvent<EventMouseMove> = new CustomEvent('inputMouseMove', { detail: { position: new Vector2(), delta: new Vector2() } });
+    eventKeyMove: CustomEvent<EventKeyMove> = new CustomEvent('inputKeyMove', { detail: { vector: new Vector3()} });
 
     constructor(){
         window.addEventListener('keydown', (e) => {
-            console.log(e.code)
             this.addKey(e.code)
+            e.stopPropagation()
         })
 
         window.addEventListener('keyup', (e) => {
@@ -88,7 +93,13 @@ export class InputManager {
     }
 
     addKey(code: string){
+        if(this.keys.has(code)){
+            return
+        }
         this.keys.add(code)
+        for(let key of this.keys){
+            console.log(key)
+        }
         if(code === this.keyMoveForward || code === this.keyMoveBack || code === this.keyMoveLeft || code === this.keyMoveRight || code === this.keyMoveUp || code === this.keyMoveDown){
             this.updateMoveInput(code)
         }
@@ -132,10 +143,10 @@ export class InputManager {
         }
         switch(input){
             case this.keyMoveForward:
-                this.moveVectorOpposingKeys(this.keyMoveBack, 1, isPressed, false, this.moveVector)
+                this.moveVector.z = isPressed ? 1 : 0
                 break
             case this.keyMoveBack:
-                this.moveVectorOpposingKeys(this.keyMoveForward, -1, isPressed, false, this.moveVector)
+                this.moveVector.z = isPressed ? -1 : 0
                 break
             case this.keyMoveLeft:
                 this.moveVectorOpposingKeys(this.keyMoveRight, -1, isPressed, true, this.moveVector)
@@ -144,12 +155,15 @@ export class InputManager {
                 this.moveVectorOpposingKeys(this.keyMoveLeft, 1, isPressed, true, this.moveVector)
                 break
             case this.keyMoveUp:
-                this.moveVector.z = isPressed ? 1 : 0
+                this.moveVectorOpposingKeys(this.keyMoveBack, 1, isPressed, false, this.moveVector)
                 break
             case this.keyMoveDown:
-                this.moveVector.z = isPressed ? -1 : 0
+                this.moveVectorOpposingKeys(this.keyMoveForward, -1, isPressed, false, this.moveVector)
                 break
         }
+
+        this.eventKeyMove.detail.vector = this.moveVector
+        document.dispatchEvent(this.eventKeyMove)
     }
 
     updateMouseKeyInput(input: string){

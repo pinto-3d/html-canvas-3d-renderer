@@ -14,6 +14,7 @@ const Canvas = (props : CanvasProps) => {
     const timeSinceStart = useRef<number>(0);
 
     useEffect(() => {
+        if(Game.instance){ return; }
 
         if(!canvasRef.current){ return; }
 
@@ -26,8 +27,8 @@ const Canvas = (props : CanvasProps) => {
         let animationFrameId : number
 
         let displayScale = 2
-        canvas.width = 512 * displayScale
-        canvas.height = 288 * displayScale
+        canvas.width = 640 * displayScale
+        canvas.height = 360 * displayScale
 
         context.imageSmoothingEnabled = false;
         context.lineWidth = 0
@@ -58,7 +59,7 @@ const Canvas = (props : CanvasProps) => {
         return () => {
             window.cancelAnimationFrame(animationFrameId)
         }
-    }, [])
+    }, [canvasRef])
 
     document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener(InputManager.strELockMouse, (e) =>{

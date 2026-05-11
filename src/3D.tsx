@@ -251,6 +251,10 @@ export class Vector3 {
         this.z = z
     }
 
+    isEqual(vector:Vector3){
+        return this.x == vector.x && this.y == vector.y && this.z == vector.z
+    }
+
     static fromV3(v: Vector3){
         return new Vector3(v.x, v.y, v.z)
     }
