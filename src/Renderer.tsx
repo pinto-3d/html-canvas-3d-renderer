@@ -392,6 +392,10 @@ export class Renderer{
     clear(ctx: CanvasRenderingContext2D){
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
         ctx.fillStyle = ColorRGBA.background.toHex()
+        let gradient = ctx.createLinearGradient(ctx.canvas.width, ctx.canvas.height/2, ctx.canvas.width, ctx.canvas.height)
+        gradient.addColorStop(0, ColorRGBA.background.toHex())
+        gradient.addColorStop(1, ColorRGBA.darkBlue.toHex())
+        ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     }
 

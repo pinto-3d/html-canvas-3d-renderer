@@ -164,7 +164,7 @@ export class ColorRGBA {
         return new ColorHSV(h,s,v)
     }
 
-    static darkBlue = ColorRGBA.fromHex('#0000FF')
+    static darkBlue = ColorRGBA.fromHex('#006eff')
     static lightBlue = ColorRGBA.fromHex('#00AAEE')
     static orangeJuiceOrange = ColorRGBA.fromHex('#EEAA00')
     static skyLightBlue = ColorRGBA.fromHex('#AAEEFF')

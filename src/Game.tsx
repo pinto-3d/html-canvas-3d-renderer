@@ -46,7 +46,7 @@ export class Game{
                     this.addObject(new HoveringObject(islandObjs[i].mesh, islandObjs[i].name))
                 }
                 else{
-                    let island = this.addObject(new HoveringObject(islandObjs[i].mesh, islandObjs[i].name))
+                    let island = this.addObject(new MouseInteractableObject(islandObjs[i].mesh, islandObjs[i].name))
                 }
             }
 

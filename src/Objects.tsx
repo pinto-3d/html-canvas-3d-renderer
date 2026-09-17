@@ -118,7 +118,8 @@ export class CloudBillboard extends Billboard {
 
 export class CameraController extends Camera {
 
-    CAM_ROTATION_SPEED: Vector2 = new Vector2(1, 1) 
+    CAM_ROTATION_SPEED: Vector2 = new Vector2(-1.5, 0.2) 
+    CAM_MOVE_SPEED: Vector2 = new Vector2(6, 2) 
     moveVector: Vector3 = Vector3.zero()
     lookVector: Vector2 = Vector2.zero()
 
@@ -162,15 +163,16 @@ export class CameraController extends Camera {
 
     resetRotation() {
         super.resetRotation()
-        this.moveWPosition(new Vector3(0, 2.45, 4.1))
+        this.moveWPosition(new Vector3(0, 1.1, 4.1))
         // this.moveWPosition(new Vector3(0, 0, 10))
-        this.camRotate(new Vector2(-Math.PI, 0.5))
+        this.camRotate(new Vector2(-Math.PI, 0.2))
     }
 
     mouseMoved(position: Vector2, delta: Vector2){
         this.resetRotation()
         // this.dragVector = delta 
         this.camRotate(new Vector2((position.x/window.innerWidth-0.5)*this.CAM_ROTATION_SPEED.x, (position.y/window.innerHeight-0.5)*this.CAM_ROTATION_SPEED.y))
+        this.moveWPosition(new Vector3((position.x/window.innerWidth-0.5)*this.CAM_MOVE_SPEED.x, (position.y/window.innerHeight-0.5)*this.CAM_MOVE_SPEED.y))
     }
 
     keyLooked(vector: Vector2){
