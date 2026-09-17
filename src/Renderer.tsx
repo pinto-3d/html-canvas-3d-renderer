@@ -267,7 +267,7 @@ export class Renderer{
                     let newColor: ColorRGBA = new ColorRGBA(fdc.face.color.r, fdc.face.color.g, fdc.face.color.b, fdc.face.color.a)
                     if(isShaded){
                         let change = 0
-                        // change = -((fdc.dot) * 50)
+                        change = -((fdc.dot) * 50)
                         // change = 
                         
                         newColor.r = fdc.face.color.r + change
