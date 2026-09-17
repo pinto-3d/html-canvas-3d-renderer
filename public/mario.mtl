@@ -1,0 +1,112 @@
+# Blender 5.2.2 LTS MTL File: 'None'
+# www.blender.org
+
+newmtl mario_cap
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 0.000000 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl mario_eyes
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/a/Downloads/Nintendo 64 - Super Mario 64 - Playable Characters - Mario/textures/mario_eyes_center.png
+
+newmtl mario_face
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.991102 0.533276 0.191202
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl mario_hair
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.171441 0.001821 0.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl mario_hair_sideburn
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/a/Downloads/Nintendo 64 - Super Mario 64 - Playable Characters - Mario/textures/mario_sideburn.png
+
+newmtl mario_hand
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl mario_m_logo
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/a/Downloads/Nintendo 64 - Super Mario 64 - Playable Characters - Mario/textures/mario_logo.png
+
+newmtl mario_mustache
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/a/Downloads/Nintendo 64 - Super Mario 64 - Playable Characters - Mario/textures/mario_mustache.png
+
+newmtl mario_overalls
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl mario_shoes
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.168269 0.011612 0.004391
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl mario_yellow_button
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd /home/a/Downloads/Nintendo 64 - Super Mario 64 - Playable Characters - Mario/textures/mario_overalls_button.png
