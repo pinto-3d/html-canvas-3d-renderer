@@ -46,9 +46,10 @@ export class Game{
                     this.addObject(new HoveringObject(islandObjs[i].mesh, islandObjs[i].name))
                 }
                 else{
-                    this.addObject(new MouseInteractableObject(islandObjs[i].mesh, islandObjs[i].name))
+                    let island = this.addObject(new HoveringObject(islandObjs[i].mesh, islandObjs[i].name))
                 }
             }
+
             let cloud = new CloudBillboard(bmpCloud, 1, "cloud")
             cloud.moveWPosition(new Vector3(0, 0, 10))
             this.addObject(cloud)
@@ -70,6 +71,7 @@ export class Game{
         }
         this.objectMap.set(obj.name, this.objects.length)
         this.objects.push(obj)
+        return obj;
     }
     
     prevObj: MouseInteractableObject | null = null

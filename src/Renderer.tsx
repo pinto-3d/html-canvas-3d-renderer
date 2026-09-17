@@ -13,7 +13,7 @@ export type RendererProps = {
 export class Renderer{
     
     camera: Camera = new CameraController()
-    FOV: number = 90;
+    FOV: number = 270;
     focalLength: number = 1/ Math.tan(this.FOV/2);
     scaleMultiplier: number = 1
     renderDimensions: Vector2 = Vector2.zero()

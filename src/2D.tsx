@@ -19,6 +19,10 @@ export class Vector2 {
         return this
     }
     
+    magnitude(){
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
+    }
+
     setZero(){
         this.x = 0
         this.y = 0

@@ -8,6 +8,9 @@ export interface EventMouseMove{
 export interface EventKeyMove{
     vector: Vector3;
 }
+export interface EventKeyLook{
+    vector: Vector2;
+}
 
 export class InputManager {
     keys: Set<string> = new Set()
@@ -50,6 +53,7 @@ export class InputManager {
     // Define the type for the mouse move event detail
     eventMouseMove: CustomEvent<EventMouseMove> = new CustomEvent('inputMouseMove', { detail: { position: new Vector2(), delta: new Vector2() } });
     eventKeyMove: CustomEvent<EventKeyMove> = new CustomEvent('inputKeyMove', { detail: { vector: new Vector3()} });
+    eventKeyLook: CustomEvent<EventKeyLook> = new CustomEvent('inputKeyLook', { detail: { vector: new Vector2()} });
 
     constructor(){
         window.addEventListener('keydown', (e) => {
@@ -186,7 +190,8 @@ export class InputManager {
                 break
         }
         this.mouseDiffVector.multiply(this.MOUSE_KEY_SPEED)
-        document.dispatchEvent(new Event(InputManager.strEMoveMouseKeysPressed))
+        this.eventKeyLook.detail.vector = this.mouseDiffVector
+        document.dispatchEvent(this.eventKeyLook)
     }
 
     moveVectorOpposingKeys(oppKey: string, curNum: number, isPressed: boolean, isX: boolean, curVector: Vector2 | Vector3){
